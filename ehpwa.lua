@@ -16,7 +16,7 @@ function()
         
         -- ABILITY REDUCTIONS --
         Buff = {name = "", pdr = 0, mdr = 0, stagger = 0}
-        function Buff:new(o, name, pdr, mdr, stagger)
+        function Buff:new(o, name, pdr, mdr, stagger, always_active)
             o.parent = self
             return o
         end
@@ -44,7 +44,20 @@ function()
             --TODO
         end
         
-        
+        -- WARLOCK -- 
+        if UnitClass("player") == "Warlock" then
+            local pet_dead = UnitIsDead("pet")
+            talentID, name, texture, selected, available, spellID, unknown, row, column, known, grantedByAura = GetTalentInfoByID(108415)
+            if pet_dead then 
+                local soul_link = Buff:new{"Soul Link", 0.2, 0.2, 0, true}
+            else
+                local soul_link = Buff:new{"Soul Link", 0.2, 0.2, 0, true]
+            end
+            class_list = {
+                Buff:new{"Unending Resolve", 0.4, 0.4, 0"},
+                soul_link,
+            }
+        end
         
         
         -- GLOBAL --
@@ -60,7 +73,7 @@ function()
         local global_pdr = 0
         local global_mdr = 0
         for k,v in pairs(class_list) do 
-            if UnitAura("player", v[1]) then
+            if UnitAura("player", v[1]) or v[4] then
                 if final_pdr == 0 and v[2] > 0 then
                     final_pdr = v[2]
                 else
