@@ -46,15 +46,15 @@ function()
         
         -- WARLOCK -- 
         if UnitClass("player") == "Warlock" then
-            local pet_dead = UnitIsDead("pet")
-            talentID, name, texture, selected, available, spellID, unknown, row, column, known, grantedByAura = GetTalentInfoByID(108415)
-            if pet_dead then 
-                local soul_link = Buff:new{"Soul Link", 0, 0, 0, true}
-            else
-                local soul_link = Buff:new{"Soul Link", 0.2, 0.2, 0, true]
+            local pet_dead = UnitIsDead("playerpet")
+            local soul_link = Buff:new{"Soul Link", 0, 0, 0}
+            if pet_dead == nil then 
+                soul_link = Buff:new{"Soul Link", 0.2, 0.2, 0}
+                
             end
+            
             class_list = {
-                Buff:new{"Unending Resolve", 0.4, 0.4, 0"},
+                Buff:new{"Unending Resolve", 0.4, 0.4, 0},
                 soul_link,
             }
         end
@@ -73,7 +73,7 @@ function()
         local global_pdr = 0
         local global_mdr = 0
         for k,v in pairs(class_list) do 
-            if UnitAura("player", v[1]) or v[4] then
+            if UnitAura("player", v[1]) then
                 if final_pdr == 0 and v[2] > 0 then
                     final_pdr = v[2]
                 else
@@ -122,9 +122,11 @@ function()
         local physical_damage_reduction = health / ((effective_armor_reduction) * final_pdr * (1 - stagger) * global_pdr)
         local magical_damage_reduction = health / (final_mdr * global_mdr) 
         -- return values
-        return "Physical: " .. math.floor(physical_damage_reduction/1000) .. "K \n" .. "Magical: " .. math.floor(magical_damage_reduction/1000) .. "K"
+        local pet_dead = UnitIsVisible("playerpet")
+        return "Physical: " .. math.floor(physical_damage_reduction/1000) .. "K \n" .. "Magical: " .. math.floor(magical_damage_reduction/1000) .. "K, "
     end
 end
+
 
 
 
