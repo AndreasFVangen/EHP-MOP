@@ -49,7 +49,7 @@ function()
             local pet_dead = UnitIsDead("pet")
             talentID, name, texture, selected, available, spellID, unknown, row, column, known, grantedByAura = GetTalentInfoByID(108415)
             if pet_dead then 
-                local soul_link = Buff:new{"Soul Link", 0.2, 0.2, 0, true}
+                local soul_link = Buff:new{"Soul Link", 0, 0, 0, true}
             else
                 local soul_link = Buff:new{"Soul Link", 0.2, 0.2, 0, true]
             end
