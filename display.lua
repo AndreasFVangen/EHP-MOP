@@ -52,7 +52,7 @@ function()
         final_mdr = 1-final_mdr
         
         
-        for k,v in pairs(global_abilities_list) do
+        for k,v in pairs(aura_env.global_reductions) do
             if UnitAura("player", v[1]) then
                 if global_pdr == 0  and v[2] > 0 then
                     global_pdr = v[2]
