@@ -22,6 +22,8 @@ aura_env.class_reductions = {
         
     },
     ["Priest"] = {
+        Buff:new{"Dispersion", 0.9, 0.9, 0}
+        
         
     },
     ["Shaman"] = {
@@ -52,6 +54,9 @@ aura_env.class_reductions = {
 
 aura_env.global_reductions = {
     Buff:new{"Avert Harm", 0.2, 0.2, 0},
-    Buff:new{"Barkskin", 0.2, 0.2, 0},
+    Buff:new{"Ironbark", 0.2, 0.2, 0},
+    Buff:new{"Power Word: Barrier", 0.25, 0.25, 0},
+    Buff:new{"Pain Suppression", 0.4, 0.4, 0},
+    Buff:new{"Aura Mastery", 0.2, 0.2, 0}
 }
 
