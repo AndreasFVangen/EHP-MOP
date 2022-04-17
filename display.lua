@@ -33,7 +33,7 @@ function()
         local final_mdr = 0
         local global_pdr = 0
         local global_mdr = 0
-        for k,v in pairs(aura_env.global_reductions) do 
+        for k,v in pairs(aura_env.class_reductions[aura_env.player_class]) do 
             if UnitAura("player", v[1]) then
                 if final_pdr == 0 and v[2] > 0 then
                     final_pdr = v[2]
