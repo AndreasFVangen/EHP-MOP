@@ -22,12 +22,6 @@ function()
         end
         
         
-        -- CLASS REDUCTIONS --
-        
-        
-        -- MONK --
-        
-        
         -- damage reduction calculations
         local final_pdr = 0
         local final_mdr = 0
@@ -53,7 +47,7 @@ function()
                 aura_env.stagger = aura_env.stagger + v[4]
             end
         end
-        -- % correction, so it's scaling the multiplicative defence scaling right
+        -- % correction, so it's scaling the multiplicative defence right
         final_pdr = 1-final_pdr
         final_mdr = 1-final_mdr
         
@@ -81,7 +75,6 @@ function()
         local physical_damage_reduction = health / ((effective_armor_reduction) * final_pdr * (1 - aura_env.stagger) * global_pdr)
         local magical_damage_reduction = health / (final_mdr * global_mdr) 
         -- return values
-        local pet_dead = UnitIsVisible("playerpet")
         return "Physical: " .. math.floor(physical_damage_reduction/1000) .. "K \n" .. "Magical: " .. math.floor(magical_damage_reduction/1000) .. "K "
     end
 end
