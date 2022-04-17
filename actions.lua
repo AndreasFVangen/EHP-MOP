@@ -7,56 +7,30 @@ if aura_env.player_class == "Monk" then
     aura_env.stagger = 0.2 + GetMasteryEffect()/100
 end
 
+aura_env.reductions = {
+    -- WARLOCK --
+    [108446] =  {0.2, 0.2, 0}, -- SOUL LINK
+    [104773] =  {0.4, 0.4, 0}, -- UNENDING RESOLVE
+    
+    -- PRIEST --
+    [47585]  =  {0.9, 0.9, 0}, -- DISPERSION
+    [45243]  =  {0.15, 0.15, 0}, -- FOCUSED WILL
+    [62618]  =  {0.25, 0.25, 0}, -- BARRIER
+    [33206]  =  {0.4, 0.4, 0},
+}
 
-aura_env.class_reductions = {
-    ["Warrior"] = {
-        
-    },
-    ["Paladin"] = {
-        
-    },
-    ["Hunter"] = {
-        
-    },
-    ["Rogue"] = {
-        
-    },
-    ["Priest"] = {
-        Buff:new{"Dispersion", 0.9, 0.9, 0}
-        
-        
-    },
-    ["Shaman"] = {
-        
-    },
-    ["Mage"] = {
-        
-    },
-    ["Monk"] =  {
-        Buff:new{"Shuffle", 0, 0 , 0.2},
-        Buff:new{"Fortifying Brew", 0.25, 0.25, 0.2},
-        Buff:new{"Diffuse Magic", 0, 0.9, 0},
-        Buff:new{"Zen Meditation", 0.9, 0.9, 0}
-    },
-    ["Warlock"] = {
-        Buff:new{"Unending Resolve", 0.4, 0.4, 0},
-        Buff:new{"Soul Link", 0.2, 0.2, 0}
-        
-    },
-    ["Druid"] = {
-        
-    },
-    ["Death Knight"] = {
-        
-    }
+aura_env.absorbs = {
+    -- PRIEST --
+    [108945]  = true, -- ANGELIC BULWARK
+    [47753]   = true,   -- DIVINE AEGIS
+    [101904]  = true,  -- SPIRIT SHELL
+    [17]      = true,  -- Power WOrd Shield
     
 }
 
-aura_env.global_reductions = {
-    Buff:new{"Avert Harm", 0.2, 0.2, 0},
-    Buff:new{"Ironbark", 0.2, 0.2, 0},
-    Buff:new{"Power Word: Barrier", 0.25, 0.25, 0},
-    Buff:new{"Pain Suppression", 0.4, 0.4, 0},
-    Buff:new{"Aura Mastery", 0.2, 0.2, 0}
-}
+
+
+
+
+
 

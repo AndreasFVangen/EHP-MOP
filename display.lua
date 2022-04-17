@@ -1,6 +1,7 @@
 function()
     if PaperDollFrame then
         local health = UnitHealth("player")
+        local absorb = 0
         
         -- GET AND SET ARMOR REDUCTION VALUES --
         local baselineArmor, effectiveArmor, armor, bonusArmor = UnitArmor("player");
@@ -25,55 +26,43 @@ function()
         -- damage reduction calculations
         local final_pdr = 0
         local final_mdr = 0
-        local global_pdr = 0
-        local global_mdr = 0
-        for k,v in pairs(aura_env.class_reductions[aura_env.player_class]) do 
-            if UnitAura("player", v[1]) then
-                if final_pdr == 0 and v[2] > 0 then
-                    final_pdr = v[2]
-                else
-                    
-                    final_pdr = final_pdr * (1 - v[2])
+        
+        local i = 1
+        local name, _, _, stacks, _, _, _, _, _, _, spellId, _, _, _, tooltip = UnitAura("player", i)
+        while spellId do
+            name, _, _, stacks, _, _, _, _, _, _, spellId,  _, _, _, tooltip  = UnitAura("player", i)
+            
+            if aura_env.reductions[spellId] then
+                if final_pdr == 0 and aura_env.reductions[spellId][1] > 0 then
+                    final_pdr = aura_env.reductions[spellId][1] * stacks
+                else                    
+                    final_pdr = final_pdr * (1 - aura_env.reductions[spellId][1] * stacks) -- Unsure if stacks multi like this is smart :shrug:
                 end
                 
-                if final_mdr == 0 and v[3] > 0 then
-                    final_mdr = v[3]
-                else
-                    
-                    final_mdr = final_mdr * (1 - v[3])
+                if final_mdr == 0 and aura_env.reductions[spellId][2] > 0 then
+                    final_mdr = aura_env.reductions[spellId][2] * stacks
+                else                    
+                    final_mdr = final_mdr * (1 - aura_env.reductions[spellId][2] * stacks)
                 end
                 
-                
-                aura_env.stagger = aura_env.stagger + v[4]
+                aura_env.stagger = aura_env.stagger + aura_env.reductions[spellId][3]
             end
+            
+            if aura_env.absorbs[spellId] then
+                absorb =  absorb + tooltip
+            end
+            
+            i = i +1
         end
+        
         -- % correction, so it's scaling the multiplicative defence right
         final_pdr = 1-final_pdr
         final_mdr = 1-final_mdr
         
-        
-        for k,v in pairs(aura_env.global_reductions) do
-            if UnitAura("player", v[1]) then
-                if global_pdr == 0  and v[2] > 0 then
-                    global_pdr = v[2]
-                else            
-                    global_pdr = global_pdr * (1-v[2]) 
-                end
-                
-                if global_mdr == 0 and v[3] > 0 then
-                    global_mdr = v[3]
-                else
-                    global_mdr = global_mdr * (1-v[3]) 
-                end
-                
-            end
-        end
-        
-        global_pdr = 1 - global_pdr
-        global_mdr = 1 - global_mdr
-        
-        local physical_damage_reduction = health / ((effective_armor_reduction) * final_pdr * (1 - aura_env.stagger) * global_pdr)
-        local magical_damage_reduction = health / (final_mdr * global_mdr) 
+
+        local physical_damage_reduction = (health + absorb) / ((effective_armor_reduction) * final_pdr * (1 - aura_env.stagger))
+        local magical_damage_reduction = (health + absorb) / (final_mdr) 
+
         -- return values
         return "Physical: " .. math.floor(physical_damage_reduction/1000) .. "K \n" .. "Magical: " .. math.floor(magical_damage_reduction/1000) .. "K "
     end
