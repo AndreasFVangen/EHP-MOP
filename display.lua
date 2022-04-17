@@ -16,42 +16,10 @@ function()
         
         -- ABILITY REDUCTIONS --
         Buff = {name = "", pdr = 0, mdr = 0, stagger = 0}
-        function Buff:new(o, name, pdr, mdr, stagger)
+        function Buff:new(o, name, pdr, mdr, stagger, always_active)
             o.parent = self
             return o
         end
-        
-        
-        -- CLASS REDUCTIONS --
-        local class_list = {}
-        local stagger = 0
-        -- MONK --
-        -- NAME, PHYSICAL DR, MAGICAL DR, STAGGER (d
-        -- TO ADD BUFFS, Follow bellow. a 10% dmg reduction is presented as 0.1.
-        if UnitClass("player") == "Monk" then
-            stagger = 0.2 + GetMasteryEffect()/100
-            
-            class_list = {
-                Buff:new{"Shuffle", 0, 0 , 0.2},
-                Buff:new{"Fortifying Brew", 0.25, 0.25, 0.2},
-                Buff:new{"Diffuse Magic", 0, 0.9, 0},
-                Buff:new{"Zen Meditation", 0.9, 0.9, 0}
-            }
-        end
-        
-        -- PALADIN --
-        if UnitClass("player") == "Paladin" then
-            --TODO
-        end
-        
-        
-        
-        
-        -- GLOBAL --
-        global_abilities_list = {
-            Buff:new{"Avert Harm", 0.2, 0.2, 0},
-            Buff:new{"Barkskin", 0.2, 0.2, 0},
-        }
         
         
         -- damage reduction calculations
@@ -59,7 +27,7 @@ function()
         local final_mdr = 0
         local global_pdr = 0
         local global_mdr = 0
-        for k,v in pairs(class_list) do 
+        for k,v in pairs(aura_env.class_reductions[aura_env.player_class]) do 
             if UnitAura("player", v[1]) then
                 if final_pdr == 0 and v[2] > 0 then
                     final_pdr = v[2]
@@ -76,21 +44,19 @@ function()
                 end
                 
                 
-                stagger = stagger + v[4]
+                aura_env.stagger = aura_env.stagger + v[4]
             end
         end
-        -- % correction, so it's scaling the multiplicative defence scaling right
+        -- % correction, so it's scaling the multiplicative defence right
         final_pdr = 1-final_pdr
         final_mdr = 1-final_mdr
-        
         
         
         for k,v in pairs(global_abilities_list) do
             if UnitAura("player", v[1]) then
                 if global_pdr == 0  and v[2] > 0 then
                     global_pdr = v[2]
-                else
-                    
+                else            
                     global_pdr = global_pdr * (1-v[2]) 
                 end
                 
@@ -106,12 +72,13 @@ function()
         global_pdr = 1 - global_pdr
         global_mdr = 1 - global_mdr
         
-        local physical_damage_reduction = health / ((effective_armor_reduction) * final_pdr * (1 - stagger) * global_pdr)
+        local physical_damage_reduction = health / ((effective_armor_reduction) * final_pdr * (1 - aura_env.stagger) * global_pdr)
         local magical_damage_reduction = health / (final_mdr * global_mdr) 
         -- return values
-        return "Physical: " .. math.floor(physical_damage_reduction/1000) .. "K \n" .. "Magical: " .. math.floor(magical_damage_reduction/1000) .. "K"
+        return "Physical: " .. math.floor(physical_damage_reduction/1000) .. "K \n" .. "Magical: " .. math.floor(magical_damage_reduction/1000) .. "K "
     end
 end
+
 
 
 
