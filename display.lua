@@ -59,10 +59,11 @@ function()
         final_pdr = 1-final_pdr
         final_mdr = 1-final_mdr
         
-        
+
         local physical_damage_reduction = (health + absorb) / ((effective_armor_reduction) * final_pdr * (1 - aura_env.stagger))
         local magical_damage_reduction = (health + absorb) / (final_mdr) 
-        -- return 
+
+        -- return values
         return "Physical: " .. math.floor(physical_damage_reduction/1000) .. "K \n" .. "Magical: " .. math.floor(magical_damage_reduction/1000) .. "K "
     end
 end
