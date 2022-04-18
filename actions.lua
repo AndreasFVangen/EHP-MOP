@@ -1,11 +1,7 @@
 -- SETUP --
 aura_env.player_class = UnitClass("player")
+aura_env.absorb_amount = 0
 
--- INIT STAGGER --
-aura_env.stagger = 0
-if aura_env.player_class == "Monk" then
-    aura_env.stagger = 0.2 + GetMasteryEffect()/100
-end
 
 aura_env.reductions = {
     -- WARLOCK --
@@ -27,6 +23,9 @@ aura_env.absorbs = {
     [17]      = true,  -- Power WOrd Shield
     
 }
+
+
+
 
 
 
