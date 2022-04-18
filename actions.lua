@@ -1,6 +1,5 @@
 -- SETUP --
 aura_env.player_class = UnitClass("player")
--- aura_env.player_spec = GetSpecialization("player") --
 
 -- INIT STAGGER --
 aura_env.stagger = 0
@@ -8,63 +7,77 @@ if aura_env.player_class == "Monk" then
     aura_env.stagger = 0.2 + GetMasteryEffect()/100
 end
 
-
-aura_env.class_reductions = {
-    ["Warrior"] = {
-        Buff:new{"Shield Wall", 0.4, 0.4, 0},
-	Buff:new{"Die by The Sword", 0.2, 0.2, 0},
-    },
-    ["Paladin"] = {
-        Buff:new{"Divine Protection", 0.2, 0.2, 0},
-	Buff:new{"Guardian of Ancient Kings", 0.5, 0.5, 0},
-	Buff:new{"Ardent Defender", 0.2, 0.2, 0},
-    },
-    ["Hunter"] = {
-        Buff:new{"Deterrence", 0.3, 0.3, 0},
-    },
-    ["Rogue"] = {
-        Buff:new{"Feint", 0.3, 0.3, 0},
-    },
-    ["Priest"] = {
-        Buff:new{"Dispersion", 0.9, 0.9, 0}
-    },
-    ["Shaman"] = {
-        Buff:new{"Shamanistic Rage", 0.3, 0.3, 0},
-	Buff:new{"Astral Shift", 0.4, 0.4, 0},
-    },
-    ["Mage"] = {
-        Buff:new{"Greater Invisibility", 0.9, 0.9, 0},
-	Buff:new{"Temporal Shield", 0.15, 0.15, 0},
-    },
-    ["Monk"] =  {
-        Buff:new{"Shuffle", 0, 0, 0.2},
-        Buff:new{"Fortifying Brew", 0.25, 0.25, 0.2},
-        Buff:new{"Diffuse Magic", 0, 0.9, 0},
-        Buff:new{"Zen Meditation", 0.9, 0.9, 0}
-	Buff:new{"Dampen Harm", 0.5, 0.5, 0},
-    },
-    ["Warlock"] = {
-        Buff:new{"Unending Resolve", 0.4, 0.4, 0},
-        Buff:new{"Soul Link", 0.2, 0.2, 0}  
-    },
-    ["Druid"] = {
-        Buff:new{"Barkskin", 0.2, 0.2, 0},
-	Buff:new{"Survival Instincts", 0.5, 0.5, 0},
-    },
-    ["Death Knight"] = {
-        Buff:new{"Icebound Fortitude", 0.2, 0.2, 0},
-	Buff:new{"Bone Shield", 0.2, 0.2, 0},
-    }
-    
+aura_env.reductions = {
+    -- DEATH KNIGHT --
+	[49222] = {0.2, 0.2, 0}, -- Bone Shield
+	[48263] = {0.1, 0.1, 0}, -- Blood Presence?
+	[48792] = {0.2, 0.2, 0}, -- Icebound Fortitude DPS
+	[58130] = {0.5, 0.5, 0}, -- Icebound Fortitude Tank
+	[51052] = {0, 0.4, 0}, -- Anti-Magic Zone
+	
+	-- DRUID --
+	[22812] = {0.2, 0.2, 0}, -- Barkskin
+	[61336] = {0.5, 0.5, 0}, -- Survival Instincts
+	[102342] = {0.2, 0.2, 0}, -- Ironbark
+	
+	-- HUNTER --
+	[19263] = {0.3, 0.3, 0}, -- Deterrence(non-glyphed)
+	
+	-- MAGE --
+	[115610] = {0.15, 0.15, 0}, -- Temporal Shield
+	[110959] = {0.9, 0.9, 0}, -- Greater Invisibility
+	
+	-- MONK --
+	[122783] = {0, 0.9, 0}, -- Diffuse Magic
+	[115203] = {0.2, 0.2, 0}, -- Fortifying Brew
+	
+	-- PALADIN --
+	[31850] = {0.2, 0.2, 0}, -- Ardent Defender
+	[86659] = {0.5, 0.5, 0}, -- Guardian of Ancient Kings
+	[53600] = {0.3, 0, 0}, -- Shield of the Righteous
+	[498] = {0.2, 0.2, 0}, -- Divine Protection(glyphed)
+	[31821] = {0, 0.2, 0}, -- Devotion Aura
+	[6940] = {0.3, 0.3, 0}, -- Hand of Sacrifice
+	
+	-- PRIEST --
+    	[47585]  =  {0.9, 0.9, 0}, -- DISPERSION
+    	[45243]  =  {0.15, 0.15, 0}, -- FOCUSED WILL
+   	[62618]  =  {0.25, 0.25, 0}, -- BARRIER
+   	[33206]  =  {0.4, 0.4, 0}, -- Pain Suppression
+	
+   	 -- ROGUE --
+	[1966] = {0.3, 0.3, 0}, -- Feint(Elusiveness talent)
+	
+	-- SHAMAN --
+	[30823] = {0.3, 0.3, 0}, -- Shamanistic Rage
+	[108271] = {0.4, 0.4, 0}, -- Astral Shift
+	
+	-- WARLOCK --
+    	[108446] =  {0.2, 0.2, 0}, -- SOUL LINK
+   	[104773] =  {0.4, 0.4, 0}, -- UNENDING RESOLVE
+	
+	-- WARRIOR --
+	[118038] = {0.2, 0.2, 0}, -- Die by the Sword
+	[145044] = {0.25, 0.25, 0}, -- Defensive Stance?
+	[71] = {0.25, 0.25, 0}, -- Defensive Stance?
+	[871] = {0.4, 0.4, 0}, -- Shield Wall(non-glyphed)
 }
 
-aura_env.global_reductions = {
-    Buff:new{"Avert Harm", 0.2, 0.2, 0},
-    Buff:new{"Ironbark", 0.2, 0.2, 0},
-    Buff:new{"Power Word: Barrier", 0.25, 0.25, 0},
-    Buff:new{"Pain Suppression", 0.4, 0.4, 0},
-    Buff:new{"Aura Mastery", 0.2, 0.2, 0},
-    Buff:new{"Vigilance", 0.4, 0.4, 0},
-    Buff:new{"Hand of Sacrifice", 0.3, 0.3, 0},
+aura_env.absorbs = {
+    -- PRIEST --
+    [108945]  = true,   -- ANGELIC BULWARK
+    [47753]   = true,   -- DIVINE AEGIS
+    [114908]  = true,   -- SPIRIT SHELL
+    [17]      = true,   -- Power Word: Shield
+    [48707]   = true,	-- Anti-Magic Shell(Death Knight)
+    [115295]  = true,	-- Guard(Monk)
+    [112048]  = true,	-- Shield Barrier(Warrior)
+    [77513]   = true,	-- Blood Shield(Death Knight) Only for physical damage, pls fix.
 }
+
+
+
+
+
+
 
