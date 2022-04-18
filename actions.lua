@@ -21,10 +21,10 @@ aura_env.reductions = {
 
 aura_env.absorbs = {
     -- PRIEST --
-    [108945]  = true, -- ANGELIC BULWARK
+    [108945]  = true,   -- ANGELIC BULWARK
     [47753]   = true,   -- DIVINE AEGIS
-    [101904]  = true,  -- SPIRIT SHELL
-    [17]      = true,  -- Power WOrd Shield
+    [114908]  = true,   -- SPIRIT SHELL
+    [17]      = true,   -- Power WOrd Shield
     
 }
 
