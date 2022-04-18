@@ -29,6 +29,7 @@ function()
         
         local i = 1
         local name, _, _, stacks, _, _, _, _, _, _, spellId, _, _, _, tooltip = UnitAura("player", i)
+        aura_env.absorb_amount = 0
         while spellId do
             name, _, _, stacks, _, _, _, _, _, _, spellId,  _, _, _, tooltip  = UnitAura("player", i)
             
