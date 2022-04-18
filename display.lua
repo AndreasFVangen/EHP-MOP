@@ -1,7 +1,6 @@
 function()
     if PaperDollFrame then
         local health = UnitHealth("player")
-        local absorb = 0
         
         -- GET AND SET ARMOR REDUCTION VALUES --
         local baselineArmor, effectiveArmor, armor, bonusArmor = UnitArmor("player");
@@ -24,6 +23,26 @@ function()
         
         
         -- damage reduction calculations
+        -- INIT STAGGER --
+        aura_env.stagger = 0
+        if aura_env.player_class == "Monk" then
+            aura_env.stagger = 0.2 + GetMasteryEffect()/100
+        end
+        
+        function aura_env.checkStagger()
+            local staggerRed = 1
+            if UnitClass("player") == "Monk" then
+                local staggerRed = 1 - aura_env.stagger
+                local staggerDmg = UnitStagger("player") or 0
+                local staggerCap = (UnitHealth("player")  + aura_env.absorb_amount) / (UnitHealth("player") + aura_env.absorb_amount + 100 * UnitMaxHealth("player") - staggerDmg * 10)
+                
+                if staggerRed < 0.01 then staggerCap = 0.01 end
+                if staggerRed < staggerCap then staggerRed = staggerCap end
+            end
+            return staggerRed
+            
+        end
+        
         local final_pdr = 0
         local final_mdr = 0
         
@@ -49,7 +68,7 @@ function()
             end
             
             if aura_env.absorbs[spellId] then
-                absorb =  absorb + tooltip
+                aura_env.absorb_amount =  aura_env.absorb_amount + tooltip
             end
             
             i = i +1
@@ -59,11 +78,10 @@ function()
         final_pdr = 1-final_pdr
         final_mdr = 1-final_mdr
         
-
-        local physical_damage_reduction = (health + absorb) / ((effective_armor_reduction) * final_pdr * (1 - aura_env.stagger))
-        local magical_damage_reduction = (health + absorb) / (final_mdr) 
-
-        -- return values
+        
+        local physical_damage_reduction = (health + aura_env.absorb_amount) / ((effective_armor_reduction) * final_pdr * aura_env.checkStagger())
+        local magical_damage_reduction = (health + aura_env.absorb_amount) / (final_mdr) 
+        -- return 
         return "Physical: " .. math.floor(physical_damage_reduction/1000) .. "K \n" .. "Magical: " .. math.floor(magical_damage_reduction/1000) .. "K "
     end
 end
