@@ -23,25 +23,7 @@ function()
         
         
         -- damage reduction calculations
-        -- INIT STAGGER --
-        aura_env.stagger = 0
-        if aura_env.player_class == "Monk" then
-            aura_env.stagger = 0.2 + GetMasteryEffect()/100
-        end
         
-        function aura_env.checkStagger()
-            local staggerRed = 1
-            if UnitClass("player") == "Monk" then
-                local staggerRed = 1 - aura_env.stagger
-                local staggerDmg = UnitStagger("player") or 0
-                local staggerCap = (UnitHealth("player")  + aura_env.absorb_amount) / (UnitHealth("player") + aura_env.absorb_amount + 100 * UnitMaxHealth("player") - staggerDmg * 10)
-                
-                if staggerRed < 0.01 then staggerCap = 0.01 end
-                if staggerRed < staggerCap then staggerRed = staggerCap end
-            end
-            return staggerRed
-            
-        end
         
         local final_pdr = 0
         local final_mdr = 0
