@@ -1,7 +1,6 @@
 function()
     if PaperDollFrame then
         local health = UnitHealth("player")
-        local absorb = 0
         
         -- GET AND SET ARMOR REDUCTION VALUES --
         local baselineArmor, effectiveArmor, armor, bonusArmor = UnitArmor("player");
@@ -24,6 +23,8 @@ function()
         
         
         -- damage reduction calculations
+        
+        
         local final_pdr = 0
         local final_mdr = 0
         
@@ -50,7 +51,7 @@ function()
             end
             
             if aura_env.absorbs[spellId] then
-                absorb =  absorb + tooltip
+                aura_env.absorb_amount =  aura_env.absorb_amount + tooltip
             end
             
             i = i +1
@@ -60,11 +61,10 @@ function()
         final_pdr = 1-final_pdr
         final_mdr = 1-final_mdr
         
-
-        local physical_damage_reduction = (health + absorb) / ((effective_armor_reduction) * final_pdr * (1 - aura_env.stagger))
-        local magical_damage_reduction = (health + absorb) / (final_mdr) 
-
-        -- return values
+        
+        local physical_damage_reduction = (health + aura_env.absorb_amount) / ((effective_armor_reduction) * final_pdr * aura_env.checkStagger())
+        local magical_damage_reduction = (health + aura_env.absorb_amount) / (final_mdr) 
+        -- return 
         return "Physical: " .. math.floor(physical_damage_reduction/1000) .. "K \n" .. "Magical: " .. math.floor(magical_damage_reduction/1000) .. "K "
     end
 end
