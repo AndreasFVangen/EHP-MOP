@@ -61,6 +61,17 @@ aura_env.reductions = {
 	[145044] = {0.25, 0.25, 0}, -- Defensive Stance?
 	[71] = {0.25, 0.25, 0}, -- Defensive Stance?
 	[871] = {0.4, 0.4, 0}, -- Shield Wall(non-glyphed)
+
+    -- WARLOCK --
+    [108446] =  {0.2, 0.2, 0}, -- SOUL LINK
+    [104773] =  {0.4, 0.4, 0}, -- UNENDING RESOLVE
+    
+    -- PRIEST --
+    [47585]  =  {0.9, 0.9, 0}, -- DISPERSION
+    [45243]  =  {0.15, 0.15, 0}, -- FOCUSED WILL
+    [62618]  =  {0.25, 0.25, 0}, -- BARRIER
+    [33206]  =  {0.4, 0.4, 0},
+
 }
 
 aura_env.absorbs = {
@@ -73,6 +84,8 @@ aura_env.absorbs = {
     [115295]  = true,	-- Guard(Monk)
     [112048]  = true,	-- Shield Barrier(Warrior)
     [77513]   = true,	-- Blood Shield(Death Knight) Only for physical damage, pls fix.
+    [17]      = true,   -- Power WOrd Shield
+
 }
 
 
