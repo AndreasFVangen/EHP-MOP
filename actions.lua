@@ -11,11 +11,12 @@ if aura_env.player_class == "Monk" then
 end
 
 function aura_env.check_stagger()
+    
     local staggerRed = 1
-    if UnitClass("player") == "Monk" then
-        local staggerRed = 1 - aura_env.stagger
-        local staggerDmg = UnitStagger("player") or 0
-        local staggerCap = (UnitHealth("player")  + aura_env.absorb_amount) / (UnitHealth("player") + aura_env.absorb_amount + 100 * aura_env.max_health - staggerDmg * 10)
+    if aura_env.player_class == "Monk" then
+        staggerRed = 1 - aura_env.stagger
+        staggerDmg = UnitStagger("player") or 0
+        staggerCap = (UnitHealth("player")  + aura_env.absorb_amount) / (UnitHealth("player") + aura_env.absorb_amount + 100 * aura_env.max_health - staggerDmg * 10)
         
         if staggerRed < 0.01 then staggerCap = 0.01 end
         if staggerRed < staggerCap then staggerRed = staggerCap end
@@ -25,6 +26,7 @@ function aura_env.check_stagger()
 end
 
 aura_env.reductions = {
+    -- [ ID  ] = [Phys DR, Magic DR, stagger dr]   
     -- DEATH KNIGHT --
     [49222] = {0.2, 0.2, 0}, -- Bone Shield
     [48263] = {0.1, 0.1, 0}, -- Blood Presence?
@@ -46,7 +48,11 @@ aura_env.reductions = {
     
     -- MONK --
     [122783] = {0, 0.9, 0}, -- Diffuse Magic
-    [115203] = {0.2, 0.2, 0}, -- Fortifying Brew
+    [120954] = {0.25, 0.25, 0.2}, -- Fortifying Brew
+    [115307] = {0, 0, 0.2}, --Shuffle
+    [131523] = {0.9, 0.9, 0}, --Zen Meditation
+    [115213] = {0.2, 0.2 , 0}, --Avert Harm - Might be wrong?
+    
     
     -- PALADIN --
     [31850] = {0.2, 0.2, 0}, -- Ardent Defender
