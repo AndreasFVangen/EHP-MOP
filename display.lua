@@ -31,6 +31,7 @@ function()
         local i = 1
         local name, _, _, stacks, _, _, _, _, _, _, spellId, _, _, _, tooltip = UnitAura("player", i)
         aura_env.absorb_amount = 0
+        aura_env.stagger = 0.2 + GetMasteryEffect()/100
         while spellId do
             name, _, _, stacks, _, _, _, _, _, _, spellId,  _, _, _, tooltip  = UnitAura("player", i)
             
@@ -38,13 +39,13 @@ function()
                 if final_pdr == 0 and aura_env.reductions[spellId][1] > 0 then
                     final_pdr = aura_env.reductions[spellId][1] * stacks
                 else                    
-                    final_pdr = final_pdr * (1 - aura_env.reductions[spellId][1] * stacks) -- Unsure if stacks multi like this is smart :shrug:
+                    final_pdr = final_pdr * (1 - aura_env.reductions[spellId][1]) -- Unsure if stacks multi like this is smart :shrug:
                 end
                 
                 if final_mdr == 0 and aura_env.reductions[spellId][2] > 0 then
                     final_mdr = aura_env.reductions[spellId][2] * stacks
                 else                    
-                    final_mdr = final_mdr * (1 - aura_env.reductions[spellId][2] * stacks)
+                    final_mdr = final_mdr * (1 - aura_env.reductions[spellId][2])
                 end
                 
                 aura_env.stagger = aura_env.stagger + aura_env.reductions[spellId][3]
@@ -62,13 +63,12 @@ function()
         final_mdr = 1-final_mdr
         
         
-        local physical_damage_reduction = (health + aura_env.absorb_amount) / ((effective_armor_reduction) * final_pdr * aura_env.checkStagger())
+        local physical_damage_reduction = (health + aura_env.absorb_amount) / ((effective_armor_reduction) * final_pdr * aura_env.check_stagger() )
         local magical_damage_reduction = (health + aura_env.absorb_amount) / (final_mdr) 
         -- return 
-        return "Physical: " .. math.floor(physical_damage_reduction/1000) .. "K \n" .. "Magical: " .. math.floor(magical_damage_reduction/1000) .. "K "
+        return "Physical: " .. math.floor(physical_damage_reduction/1000) .. "K \n" .. "Magical: " .. math.floor(magical_damage_reduction/1000) .. "K"
     end
 end
-
 
 
 
